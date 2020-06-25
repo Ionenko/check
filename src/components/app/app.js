@@ -4,6 +4,7 @@ import logo from '../../img/logo.svg';
 import overlay from '../../img/content-bg.png';
 import InputNumeric from "../ui/input-numeric";
 import {Route, Switch} from "react-router-dom";
+import Field from "../ui/field";
 
 function handleRadioChange(e){
   console.log('change', e.target.value);
@@ -28,14 +29,9 @@ const Login = () => {
             Login to Access Your Orders
           </h3>
           <form>
-            <div className="field">
-              <label htmlFor="email" className="field__label">Email</label>
-              <input className="field__element" id="email" type="text" name="email"/>
-            </div>
-            <div className="field">
-              <label htmlFor="password" className="field__label">Password</label>
-              <input className="field__element" id="password" type="text" name="password"/>
-            </div>
+            <Field id="email" type="text" name="email" label="Email" />
+            <Field id="password" type="password" name="password" label="Password"/>
+
             <a className="link" href="/forgot-password">Forgot Password?</a>
             <p className="text text--sm">
               By continuing, you agree to Conextion’s <a href="/terms">

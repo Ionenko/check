@@ -76,53 +76,6 @@
   }
 }
 
-.field {
-
-  & + .field {
-    margin-top: 12px;
-  }
-
-  & + a {
-    margin-top: 4px;
-  }
-
-  display: block;
-
-  &__label {
-    display: block;
-    font-size: 1.4rem;
-    line-height: 2rem;
-    color: $color-grey-dark;
-    margin-bottom: 5px;
-  }
-
-  &__element {
-    display: block;
-    width: 100%;
-    margin: 0;
-    padding: 9px 11px;
-    border: none;
-    box-sizing: border-box;
-    border-radius: 2px;
-    font: inherit;
-    line-height: 1;
-    color: currentColor;
-    height: 40px;
-    min-width: 0;
-    animation-name: mui-auto-fill-cancel;
-    -webkit-tap-highlight-color: transparent;
-    background: $color-white;
-    transition: all .3s;
-
-    @include placeholder{
-      color: currentColor;
-      opacity: 0.6;
-      font: inherit;
-      font-weight: normal;
-    }
-  }
-}
-
 %btn-default {
   display: flex;
   justify-content: center;

@@ -1,0 +1,95 @@
+@import "../../../styles/abstracts/variables";
+@import "../../../styles/abstracts/mixins";
+
+.field {
+
+  $field: &;
+
+  & + .field {
+    margin-top: 12px;
+  }
+
+  & + a {
+    margin-top: 4px;
+  }
+
+  display: block;
+
+  &__label {
+    display: block;
+    font-size: 1.4rem;
+    line-height: 2rem;
+    color: $color-grey-dark;
+    margin-bottom: 5px;
+  }
+
+  input {
+    height: 40px;
+  }
+
+  textarea {
+    resize: vertical;
+    max-height: 160px;
+    min-height: 78px;
+  }
+
+  &__element {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 8px 11px;
+    border: 1px solid $color-white;
+    box-sizing: border-box;
+    border-radius: 2px;
+    font: inherit;
+    line-height: 1;
+    color: currentColor;
+    min-width: 0;
+    animation-name: mui-auto-fill-cancel;
+    -webkit-tap-highlight-color: transparent;
+    background: $color-white;
+    transition: all .3s;
+
+    @include placeholder{
+      color: currentColor;
+      opacity: 0.6;
+      font: inherit;
+      font-weight: normal;
+    }
+  }
+
+  &__message {
+    font-size: 1.4rem;
+    line-height: 2rem;
+
+    &_error {
+      color: $color-red;
+    }
+
+    &_success {
+      color: $color-green;
+    }
+
+    &_info {
+      color: $color-info;
+    }
+  }
+
+  &_error {
+    #{$field} {
+      &__element {
+        color: $color-red;
+        border-color: $color-red;
+      }
+    }
+  }
+
+  &_sucess {
+    #{$field} {
+      &__element {
+        color: $color-green;
+        border-color: $color-green;
+      }
+    }
+  }
+}
