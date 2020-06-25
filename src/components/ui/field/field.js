@@ -20,7 +20,7 @@ const Field = ({id, label, error, valid, multiline, ...props}) => {
           {label}
         </label> : null
       }
-      <TextFiled className={f('element')} id={id} {...props}/>
+      <TextFiled on className={f('element')} id={id} {...props}/>
       {
         error ? <span className={f('message', {error: !!error})}>
           {error}
@@ -33,14 +33,22 @@ const Field = ({id, label, error, valid, multiline, ...props}) => {
 Field.defaultProps = {
   type: 'text',
   value: '',
+  label: null,
+  error: null,
+  valid: true,
+  multiline: false
 };
 
 Field.propTypes = {
-  label: PropTypes.any,
-  error: PropTypes.any,
-  valid: PropTypes.any,
-  type: PropTypes.any,
-  value: PropTypes.any,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  label: PropTypes.string,
+  error: PropTypes.string,
+  valid: PropTypes.bool,
+  multiline: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 export default Field;
