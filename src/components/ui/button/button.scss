@@ -1,0 +1,80 @@
+@import '../../../styles/abstracts/variables';
+
+%btn-default {
+  display: flex;
+  min-width: 150px;
+  border: none;
+  border-radius: 2px;
+  font-size: 2.2rem;
+  line-height: 2.2rem;
+  padding: 11px 15px;
+  justify-content: center;
+  transition: all .3s ease;
+  cursor: pointer;
+  margin: 10px 0 10px;
+  font-weight: 700;
+  color: $color-white;
+  background: $color-red;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+%btn-icon {
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  align-items: center;
+  text-decoration: none;
+
+  & > .icon {
+    & + * {
+      margin-left: 6px;
+    }
+  }
+
+  &:hover {
+    & > .icon {
+      & + * {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.btn {
+  @extend %btn-default;
+
+  &:link,
+  &:visited {
+    @extend %btn-default;
+  }
+
+  &:hover {
+    background: $color-red-dark;
+    box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
+  }
+
+  &:active {
+    background: $color-red-dark;
+    box-shadow: 0 .5rem 1rem rgba($color-black, 0.3);
+  }
+}
+
+.btn-icon {
+  @extend %btn-icon;
+
+  &:link,
+  &:visited {
+    @extend %btn-icon;
+  }
+}
