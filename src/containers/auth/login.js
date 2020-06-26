@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {LoginForm} from "../../components/auth";
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import {default as AuthService} from '../../api/auth';
+import { withRouter  } from "react-router-dom";
 
 const validationSchema = Yup.object({
   email: Yup.string("Enter email")
@@ -20,10 +22,13 @@ const initialFormData = {
   password: '',
 };
 
+
 class Login extends Component {
 
-  handleSubmit(data){
-    console.log('form submitted', data)
+  async handleSubmit(data){
+    console.log('form submitted', data);
+    const isAuth = await AuthService.authenticate();
+    isAuth && this.props.history.push('/order');
   }
 
   render() {
@@ -41,4 +46,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
