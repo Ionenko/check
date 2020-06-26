@@ -1,12 +1,10 @@
 import React from 'react';
 import Field from "../../ui/field";
-import {Link} from "react-router-dom";
 import block from "bem-cn-lite";
 
 const f = block('form');
 
-const LoginForm = (props) => {
-
+const ResetPasswordForm = (props) => {
   const {
     handleChange,
     handleSubmit,
@@ -27,26 +25,14 @@ const LoginForm = (props) => {
         value={values.email}
         onChange={handleChange}
       />
-      <Field
-        id="password"
-        type="password"
-        name="password"
-        label="Password"
-        error={touched.password ? errors.password : ""}
-        value={values.password}
-        onChange={handleChange}
-      />
-      <Link className="link" to="/auth/reset-password">Forgot Password?</Link>
       <p className="text text_sm text_lg-offset">
-        By continuing, you agree to Conextion’s <Link to="/terms">
-        Terms of Service</Link> and <Link to="/policy">
-        Privacy Policy</Link>.
+        Enter your email address below to reset password
       </p>
       <div className="actions">
-        <button type="submit" disabled={!isValid} className="btn">Continue</button>
+        <button type="submit" disabled={!isValid} className="btn">Reset Password</button>
       </div>
     </form>
   );
 };
 
-export default LoginForm;
+export default ResetPasswordForm;

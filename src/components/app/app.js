@@ -1,7 +1,10 @@
 import React from 'react';
 import './app.scss';
 import {Route, Switch } from "react-router-dom";
-import {LoginPage, OrderPage} from "../../pages";
+import {
+  LoginPage,
+  ResetPasswordPage,
+  OrderPage} from "../../pages";
 import overlay from "../../img/bg.jpg";
 import block from "bem-cn-lite";
 
@@ -12,12 +15,9 @@ function App() {
     <main>
       <div className={c()} style={{backgroundImage: `url(${overlay})`}}>
         <Switch>
-          <Route exact path="/order" >
-            <OrderPage/>
-          </Route>
-          <Route exact path="/auth" >
-            <LoginPage/>
-          </Route>
+          <Route exact path="/order" component={OrderPage}/>
+          <Route exact path={['/auth', '/auth/login']}  component={LoginPage} />
+          <Route exact path='/auth/reset-password'  component={ResetPasswordPage} />
           <Route path="*">
             <div>Page not found</div>
           </Route>
