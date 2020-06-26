@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from "react";
-
 import InputNumeric from "../../components/ui/numeric";
 import Heading from "../../components/typography/heading";
 import block from "bem-cn-lite";
@@ -7,25 +6,11 @@ import Field from "../../components/ui/field";
 import Stepper from "../../components/ui/stepper";
 import RadioGroup from "../../components/ui/radio-group";
 import Files from 'react-files';
-
-import logo from "../../img/logo.svg";
 import iconPlus from "../../img/plus.svg";
+import Header from "../../components/header";
 
 const c = block('content');
 const f = block('form');
-
-const Header = (props) => {
-  return (
-    <div className={c('head')}>
-      <div className="logo">
-        <a href="/">
-          <img src={logo} alt="Connection"/>
-        </a>
-      </div>
-      {props.children}
-    </div>
-  )
-};
 
 const RetrieveOrder = () => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import './app.scss';
 import {Route, Switch } from "react-router-dom";
-import {AuthPage, OrderPage} from "../../pages";
+import {LoginPage, OrderPage} from "../../pages";
 import overlay from "../../img/bg.jpg";
 import block from "bem-cn-lite";
 
@@ -16,7 +16,7 @@ function App() {
             <OrderPage/>
           </Route>
           <Route exact path="/auth" >
-            <AuthPage/>
+            <LoginPage/>
           </Route>
           <Route path="*">
             <div>Page not found</div>

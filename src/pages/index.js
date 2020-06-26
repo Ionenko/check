@@ -1,7 +1,7 @@
 import OrderPage from "./order";
-import AuthPage from "./auth";
+import LoginPage from "./login";
 
 export {
-  AuthPage,
+  LoginPage,
   OrderPage
 }

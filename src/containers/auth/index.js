@@ -1,2 +1,5 @@
-import Auth from "./auth";
-export default Auth;
+import Login from "./login";
+
+export {
+  Login
+}
