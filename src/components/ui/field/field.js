@@ -20,7 +20,7 @@ const Field = ({id, label, error, valid, multiline, ...props}) => {
           {label}
         </label> : null
       }
-      <TextFiled on className={f('element')} id={id} {...props}/>
+      <TextFiled onChange={(e) => console.log(e.target.value)} className={f('element')} id={id} {...props}/>
       {
         error ? <span className={f('message', {error: !!error})}>
           {error}

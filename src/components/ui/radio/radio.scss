@@ -1,0 +1,31 @@
+@import "../../../styles/abstracts/variables";
+@import "../../../styles/abstracts/mixins";
+
+.btn-radio {
+  background-color: #F0EEE9;
+  border: 1px solid rgba(172, 179, 191, 0.5);
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  color: $color-black;
+  font-weight: 700;
+
+  $btn: &;
+
+  &:not(:first-child) {
+    &:not(.btn-radio_active) {
+      background-color: $color-grey-dark-2;
+    }
+  }
+
+  &_active {
+    color: $color-white;
+    background-color: $color-primary;
+    z-index: 2;
+  }
+
+  input {
+    display: none;
+    visibility: hidden;
+    z-index: -9999;
+  }
+}

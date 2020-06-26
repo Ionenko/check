@@ -1,0 +1,30 @@
+@import "../../../styles/abstracts/variables";
+
+.stepper {
+  margin: 25px 0 0;
+  overflow: hidden;
+
+  &__list {
+    margin: 0 -5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    width: 12px;
+    height: 12px;
+    margin: 5px 5px;
+    background-color: $color-white;
+    transition: all .3s;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.2;
+    border-radius: 50%;
+
+    &_active {
+      opacity: 1;
+    }
+  }
+}

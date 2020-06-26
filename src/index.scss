@@ -12,6 +12,11 @@
   flex-direction: column;
   min-height: 100vh;
   background-color: $color-grey-light;
+  padding: 48px 5px 48px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 
   $content: &;
 
@@ -26,17 +31,6 @@
       max-width: 600px;
       margin: auto;
       box-shadow: 0 4px 8px 4px rgba($color-black, 0.22);
-    }
-  }
-
-  &__wrapper {
-    padding: 48px 5px 48px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-
-    #{$content} {
-      min-height: calc(100vh - 96px);
     }
   }
 
@@ -106,6 +100,10 @@
   color: $color-white;
   transition: all .3s linear;
   position: relative;
+
+  & > * {
+    cursor: inherit;
+  }
 }
 
 .btn {
@@ -126,41 +124,19 @@
   border-radius: 10px;
   outline: none;
 
+  img {
+    margin-right: 8px;
+  }
+
   &:not(:last-child){
     margin-bottom: 22px;
   }
 }
 
-.btn-radio {
-  @extend %btn-default;
-  background-color: #F0EEE9;
-  border: 1px solid rgba(172, 179, 191, 0.5);
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-  color: $color-black;
-  font-weight: 700;
-
-  &:not(:first-child) {
-    background-color: $color-grey-dark-2;
-  }
-
-  &--active {
-    color: $color-white;
-    background-color: $color-primary;
-    z-index: 2;
-  }
-
-  input {
-    display: none;
-    visibility: hidden;
-    z-index: -9999;
-  }
-}
-
-
-form {
-  display: block;
-  margin-top: 48px;
+.files-dropzone-active {
+  border-color: $color-primary;
+  background-color: $color-white;
+  transition: all .3s;
 }
 
 .form {
@@ -173,10 +149,18 @@ form {
   }
 
   &__group {
-    padding: 0 13px;
+    padding: 0 8px;
 
     &:not(:last-child){
       margin-bottom: 17px;
+    }
+  }
+
+  &__buttons {
+    & > div {
+      &:not(:last-child){
+        margin-bottom: 22px;
+      }
     }
   }
 
@@ -193,7 +177,7 @@ form {
     padding: 0 5px;
     width: 50%;
 
-    &--center {
+    &_center {
       text-align: center;
     }
   }
@@ -222,16 +206,26 @@ form {
   line-height: 1.7rem;
   color: $color-primary;
   text-decoration: none;
+  border-bottom: 1px solid transparent;
 
   &:hover {
     border-bottom: 1px solid currentColor;
   }
+
+  &_inverse {
+    border-bottom: 1px solid currentColor;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
 }
 
 .details {
-  margin: 0 0 16px;
+  margin: 10px 0 16px;
 
   &__outside {
+    margin: 0 -6px;
   }
 
   &__items {
@@ -267,10 +261,10 @@ form {
 }
 
 .text {
-  color: $color-black;
+  color: currentColor;
   line-height: 2.2rem;
 
-  &--sm {
+  &_sm {
     font-style: normal;
     font-weight: 500;
     font-size: 1.4rem;
@@ -278,48 +272,50 @@ form {
     margin-bottom: 12px;
   }
 
-  &--secondary {
+  &_secondary {
     color: $color-secondary;
   }
 
-  &--primary {
+  &_primary {
     color: $color-primary;
   }
 
-  &--info {
+  &_info {
     color: $color-info;
   }
 
-  &--bold {
+  &_bold {
     font-weight: 700;
   }
 
-  &--underline {
+  &_underline {
     border-bottom: 1px solid currentColor;
     text-decoration: none;
     display: inline-block;
   }
   
-  &--italic {
+  &_italic {
     font-style: italic;
   }
 
-  &--center {
+  &_center {
     text-align: center;
   }
 
-  &--lg-offset {
+  &_lg-offset {
     margin: 50px 0;
   }
 }
 
 .notifications {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  margin: 16px 0;
+  margin: 26px auto;
+  position: relative;
 
-  &--center {
-    align-items: center;
+  &_center {
+    transform: translateX(-50%);
+    left: 50%;
   }
 
   &__item {
