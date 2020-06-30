@@ -2,6 +2,7 @@ import React from 'react';
 import Field from "../../ui/field";
 import {Link} from "react-router-dom";
 import block from "bem-cn-lite";
+import {Form} from "formik";
 
 const f = block('form');
 
@@ -17,7 +18,7 @@ const LoginForm = (props) => {
   } = props;
 
   return (
-    <form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
+    <Form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
       <Field
         id="email"
         type="text"
@@ -45,7 +46,7 @@ const LoginForm = (props) => {
       <div className="actions">
         <button type="submit" disabled={!isValid} className="btn">Continue</button>
       </div>
-    </form>
+    </Form>
   );
 };
 

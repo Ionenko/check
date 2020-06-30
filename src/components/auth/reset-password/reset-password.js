@@ -1,6 +1,7 @@
 import React from 'react';
 import Field from "../../ui/field";
 import block from "bem-cn-lite";
+import {Form} from "formik";
 
 const f = block('form');
 
@@ -15,7 +16,7 @@ const ResetPasswordForm = (props) => {
   } = props;
 
   return (
-    <form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
+    <Form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
       <Field
         id="email"
         type="text"
@@ -31,7 +32,7 @@ const ResetPasswordForm = (props) => {
       <div className="actions">
         <button type="submit" disabled={!isValid} className="btn">Reset Password</button>
       </div>
-    </form>
+    </Form>
   );
 };
 

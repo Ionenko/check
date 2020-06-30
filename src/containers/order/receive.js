@@ -7,7 +7,7 @@ import iconPlus from "../../img/plus.svg";
 import Field from "../../components/ui/field";
 import block from "bem-cn-lite";
 import * as Yup from "yup";
-import {Formik} from "formik";
+import {Form, Formik} from "formik";
 import File from "../../components/ui/file";
 import {connect} from "react-redux";
 import {Redirect, useHistory} from "react-router-dom";
@@ -17,7 +17,6 @@ const c = block('content');
 const f = block('form');
 
 const validationSchema = Yup.object({
-  damage: Yup.string("Damage").required("Damage option is required"),
   name: Yup.string("Name")
     .required("Name is required")
     .min(2, 'Name must contain at least 2 characters')
@@ -26,6 +25,7 @@ const validationSchema = Yup.object({
     .required("Notes is required")
     .min(2, 'Notes must contain at least 2 characters')
     .max(256, 'Notes must contain on more 256 characters'),
+  damage: Yup.string("Damage").required("Damage option is required"),
   imageBOL: Yup.array()
     .of(
       Yup.object().nullable(true)
@@ -41,9 +41,9 @@ const validationSchema = Yup.object({
 });
 
 const initialFormData = {
-  name: undefined,
-  notes: undefined,
-  damage: undefined,
+  name: '',
+  notes: '',
+  damage: '',
   imageBOL: undefined,
   imagePackages: undefined,
 };
@@ -56,11 +56,12 @@ const ReceiveForm = (props) => {
     values,
     errors,
     touched,
-    setFieldValue
+    setFieldValue,
+    isValid
   } = props;
 
   return (
-    <form className={f()} noValidate  onSubmit={handleSubmit} autoComplete="off">
+    <Form className={f()} noValidate  onSubmit={handleSubmit} autoComplete="off">
       <div className={f('group')}>
         <RadioGroup
           className={f('radio-buttons')}
@@ -128,9 +129,9 @@ const ReceiveForm = (props) => {
         onChange={handleChange}
       />
       <div className="actions">
-        <button  className="btn">Receive Shipment</button>
+        <button type="submit" className="btn">Receive Shipment</button>
       </div>
-    </form>
+    </Form>
   )
 };
 

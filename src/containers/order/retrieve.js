@@ -6,7 +6,7 @@ import Field from "../../components/ui/field";
 import Stepper from "../../components/ui/stepper";
 import Header from "../../components/header";
 import * as Yup from "yup";
-import {Formik} from "formik";
+import {Form, Formik} from "formik";
 import {connect} from "react-redux";
 import {fetchOrder} from "../../redux/actions/order";
 
@@ -35,7 +35,7 @@ const RetrieveForm = (props) => {
   } = props;
 
   return (
-    <form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
+    <Form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
       <Field
         id="number"
         type="text"
@@ -49,9 +49,9 @@ const RetrieveForm = (props) => {
         The order number should be written on the manifest or BOL and typically starts with CO.
       </p>
       <div className="actions">
-        <button disabled={!isValid} className="btn">Continue</button>
+        <button type="submit" className="btn">Continue</button>
       </div>
-    </form>
+    </Form>
   )
 };
 
