@@ -49,29 +49,20 @@
     -webkit-tap-highlight-color: transparent;
     background: $color-white;
     transition: all .3s;
+    font-size: 1.4rem;
 
-    @include placeholder{
+    @include placeholder {
       color: currentColor;
       opacity: 0.6;
       font: inherit;
       font-weight: normal;
-    }
-  }
-
-  &__message {
-    font-size: 1.4rem;
-    line-height: 2rem;
-
-    &_error {
-      color: $color-red;
+      font-size: 1.4rem;
     }
 
-    &_success {
-      color: $color-green;
-    }
-
-    &_info {
-      color: $color-info;
+    @include autofill {
+      -webkit-box-shadow: 0 0 0 30px white inset !important;
+      font: inherit;
+      font-size: 1.4rem;
     }
   }
 

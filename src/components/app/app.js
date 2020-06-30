@@ -4,7 +4,8 @@ import {Route, Switch } from "react-router-dom";
 import {
   LoginPage,
   ResetPasswordPage,
-  OrderPage} from "../../pages";
+  OrderPage
+} from "../../pages";
 import overlay from "../../img/bg.jpg";
 import block from "bem-cn-lite";
 import PrivateRoute from "../private-route";
@@ -18,7 +19,7 @@ function App() {
         <Switch>
           <Route exact path={['/auth', '/auth/login']}  component={LoginPage} />
           <Route exact path='/auth/reset-password'  component={ResetPasswordPage} />
-          <PrivateRoute exact path={['/','/order']} component={OrderPage}/>
+          <PrivateRoute path="/" component={OrderPage}/>
           <Route path="*">
             <div>Page not found</div>
           </Route>

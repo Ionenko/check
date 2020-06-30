@@ -4,6 +4,7 @@ import block from 'bem-cn-lite'
 import './field.scss';
 
 const f = block('field');
+const m = block('message');
 
 
 const Field = ({id, label, error, valid, multiline, ...props}) => {
@@ -22,7 +23,7 @@ const Field = ({id, label, error, valid, multiline, ...props}) => {
       }
       <TextFiled onChange={(e) => console.log(e.target.value)} className={f('element')} id={id} {...props}/>
       {
-        error ? <span className={f('message', {error: !!error})}>
+        error ? <span className={m({error: !!error})}>
           {error}
         </span> : null
       }

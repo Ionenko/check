@@ -1,0 +1,31 @@
+@import "../../../styles/abstracts/variables";
+@import "../../../styles/abstracts/mixins";
+
+.btn-file {
+  padding: 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $color-grey-light-2;
+  border: 1px dashed $color-black;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: $color-secondary;
+  font-weight: normal;
+
+  img {
+    margin-right: 8px;
+  }
+
+  &:not(:last-child){
+    margin-bottom: 22px;
+  }
+}
+
+.files-dropzone-active {
+  border-color: $color-primary;
+  background-color: $color-white;
+  transition: all .3s;
+}

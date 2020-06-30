@@ -1,2 +1,8 @@
 import Order from "./order";
-export default Order;
+import RetrieveOrder from './retrieve';
+import ReceiveOrder from "./receive";
+
+export {
+  RetrieveOrder,
+  ReceiveOrder
+}

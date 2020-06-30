@@ -119,31 +119,6 @@
   }
 }
 
-.btn-file {
-  padding: 20px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $color-grey-light-2;
-  border: 1px dashed $color-black;
-  border-radius: 10px;
-  outline: none;
-
-  img {
-    margin-right: 8px;
-  }
-
-  &:not(:last-child){
-    margin-bottom: 22px;
-  }
-}
-
-.files-dropzone-active {
-  border-color: $color-primary;
-  background-color: $color-white;
-  transition: all .3s;
-}
-
 .form {
   display: block;
   margin-top: 48px;
@@ -188,9 +163,6 @@
   }
 
   &__radio-buttons {
-    display: flex;
-    flex-wrap: nowrap;
-
     &:not(:last-child){
       margin-bottom: 26px;
     }
@@ -332,4 +304,22 @@
 
 .actions {
   margin-top: 40px;
+}
+
+
+.message {
+  font-size: 1.4rem;
+  line-height: 2rem;
+
+  &_error {
+    color: $color-red;
+  }
+
+  &_success {
+    color: $color-green;
+  }
+
+  &_info {
+    color: $color-info;
+  }
 }

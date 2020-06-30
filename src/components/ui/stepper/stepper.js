@@ -17,7 +17,7 @@ const Stepper = ({steps, active, completed}) => {
         active: i <= active
       })}>
         {
-          i <= completed ? <img src={checkIcon} alt="icon"/> : null
+          i < completed ? <img src={checkIcon} alt="icon"/> : null
         }
       </li>
     )

@@ -9,3 +9,10 @@
   &::-moz-placeholder          {@content}
   &:-ms-input-placeholder      {@content}
 }
+
+@mixin autofill {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {@content}
+}
