@@ -57,7 +57,6 @@ const ReceiveForm = (props) => {
     errors,
     touched,
     setFieldValue,
-    isValid
   } = props;
 
   return (
@@ -84,7 +83,7 @@ const ReceiveForm = (props) => {
             maxFileSize={10000000}
             minFileSize={0}
             value={values.imageBOL}
-            error={touched.imageBOL ? errors.imageBOL : ""}
+            error={errors.imageBOL}
             clickable
             name='imageBOL'
           >
@@ -101,7 +100,7 @@ const ReceiveForm = (props) => {
             minFileSize={0}
             clickable
             value={values.imagePackages}
-            error={touched.imagePackages ? errors.imagePackages : ""}
+            error={errors.imagePackages}
             name='imagePackages'
           >
             <img src={iconPlus} alt="icon check"/>

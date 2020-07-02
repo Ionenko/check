@@ -1,0 +1,34 @@
+@import "../../../styles/abstracts/variables";
+@import "../../../styles/abstracts/mixins";
+
+.rc-input-number {
+  width: 60px;
+  background: $color-white;
+  border: 1px solid $color-grey-dark-2;
+  border-radius: 2px;
+  height: 30px;
+  font-size: 1.4rem;
+  color: $color-grey-dark-2;
+
+  &:hover, &-focused {
+    border-color: $color-grey-dark-2;
+  }
+
+  &-input {
+    border-radius: 2px;
+  }
+
+  &-handler-wrap {
+    border-left: none;
+    width: 24px;
+  }
+
+  &-handler-up {
+    border-bottom: 0;
+
+    & > img {
+      position: relative;
+      transform: rotate(180deg);
+    }
+  }
+}
