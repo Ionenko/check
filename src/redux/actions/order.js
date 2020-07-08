@@ -1,38 +1,36 @@
-import {FETCH_ORDER_FAILURE, FETCH_ORDER_REQUEST, FETCH_ORDER_SUCCESS, RECEIVE_ORDER} from "../../constants";
-import orderApi from '../../api/order';
+import {
+  FETCH_ORDER_FAILURE,
+  FETCH_ORDER_REQUEST,
+  FETCH_ORDER_SUCCESS,
+  UPDATE_ORDER_ERROR,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
+} from '../../constants';
 
-const orderLoaded = (item) => {
-  return {
-    type: FETCH_ORDER_SUCCESS,
-    payload: item
-  }
-};
+export const orderLoaded = (order) => ({
+  type: FETCH_ORDER_SUCCESS,
+  payload: order,
+});
 
-const orderRequested = () => {
-  return {
-    type : FETCH_ORDER_REQUEST
-  }
-};
+export const orderRequested = () => ({
+  type: FETCH_ORDER_REQUEST,
+});
 
-const orderError = (error) => {
-  return {
-    type: FETCH_ORDER_FAILURE,
-    payload: error
-  }
-};
+export const orderError = (error) => ({
+  type: FETCH_ORDER_FAILURE,
+  payload: error,
+});
 
-export const fetchOrder = (id) => async (dispatch) => {
-  dispatch(orderRequested());
-  try {
-    const data = await orderApi.getOrder(id);
-    console.log(data);
-    dispatch(orderLoaded(data));
-  } catch (error) {
-    dispatch(orderError(error))
-  }
-};
+export const updateRequested = () => ({
+  type: UPDATE_ORDER_REQUEST,
+});
 
-export const receiveOrder = (data) => ({
-  type: RECEIVE_ORDER,
-  payload: data
+export const updateLoaded = (data) => ({
+  type: UPDATE_ORDER_SUCCESS,
+  payload: data,
+});
+
+export const updateError = (error) => ({
+  type: UPDATE_ORDER_ERROR,
+  payload: error,
 });

@@ -1,55 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import block from 'bem-cn-lite'
+import { Field as FiledFormik } from "formik";
+import block from 'bem-cn-lite';
 import './field.scss';
 
 const f = block('field');
 const m = block('message');
 
-
-const Field = ({id, label, error, valid, multiline, ...props}) => {
-
-  const TextFiled = !multiline ? `input` : 'textarea';
+const Field = ({ id, label, error, value, onChange, multi, name, ...props }) => {
+  const fieldType = !multi ? 'input' : 'textarea';
 
   return (
     <div className={f({
-      valid,
-      error : !!error,
-    })}>
+      error: !!error,
+    })}
+    >
       {
-        label ? <label htmlFor={id} className={f('label')}>
-          {label}
-        </label> : null
+        label ? (
+          <label htmlFor={id} className={f('label')}>
+            {label}
+          </label>
+        ) : null
       }
-      <TextFiled onChange={(e) => console.log(e.target.value)} className={f('element')} id={id} {...props}/>
+      <FiledFormik
+        {...props}
+        name={name}
+        component={fieldType}
+        id={id}
+        onChange={onChange}
+        value={value}
+        className={f('element')}
+      />
       {
-        error ? <span className={m({error: !!error})}>
-          {error}
-        </span> : null
+        error ? (
+          <span className={m({ error: !!error })}>
+            {error}
+          </span>
+        ) : null
       }
     </div>
   );
 };
 
 Field.defaultProps = {
-  type: 'text',
   value: '',
   label: null,
   error: null,
-  valid: true,
-  multiline: false
+  multi: false,
+  name: '',
 };
 
 Field.propTypes = {
   id: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number
-  ]),
+    PropTypes.number,
+  ]).isRequired,
   label: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   error: PropTypes.string,
-  valid: PropTypes.bool,
-  multiline: PropTypes.bool,
-  type: PropTypes.string,
+  multi: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Field;

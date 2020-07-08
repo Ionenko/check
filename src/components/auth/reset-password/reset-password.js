@@ -1,7 +1,8 @@
 import React from 'react';
-import Field from "../../ui/field";
-import block from "bem-cn-lite";
-import {Form} from "formik";
+import block from 'bem-cn-lite';
+import { Form } from 'formik';
+import PropTypes from 'prop-types';
+import Field from '../../ui/field';
 
 const f = block('form');
 
@@ -12,7 +13,7 @@ const ResetPasswordForm = (props) => {
     values,
     errors,
     touched,
-    isValid
+    isValid,
   } = props;
 
   return (
@@ -22,7 +23,7 @@ const ResetPasswordForm = (props) => {
         type="text"
         name="email"
         label="Email"
-        error={touched.email ? errors.email : ""}
+        error={touched.email ? errors.email : ''}
         value={values.email}
         onChange={handleChange}
       />
@@ -34,6 +35,24 @@ const ResetPasswordForm = (props) => {
       </div>
     </Form>
   );
+};
+
+ResetPasswordForm.defaultProps = {
+  handleChange: () => null,
+  handleSubmit: () => null,
+  values: {},
+  errors: {},
+  touched: {},
+  isValid: false,
+};
+
+ResetPasswordForm.propTypes = {
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  values: PropTypes.objectOf(PropTypes.any),
+  errors: PropTypes.objectOf(PropTypes.any),
+  touched: PropTypes.objectOf(PropTypes.any),
+  isValid: PropTypes.bool,
 };
 
 export default ResetPasswordForm;

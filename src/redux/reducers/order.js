@@ -1,14 +1,16 @@
 import {
   FETCH_ORDER_FAILURE,
   FETCH_ORDER_REQUEST,
-  FETCH_ORDER_SUCCESS, RECEIVE_ORDER
-} from "../../constants";
-
+  FETCH_ORDER_SUCCESS,
+  UPDATE_ORDER_ERROR,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
+} from '../../constants';
 
 const initialState = {
   item: null,
   loading: false,
-  error: null
+  error: null,
 };
 
 const orderReducer = (state = initialState, action) => {
@@ -34,13 +36,32 @@ const orderReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
-    case RECEIVE_ORDER:
+    case UPDATE_ORDER_REQUEST:
       return {
         ...state,
+        loading: true,
+        error: null,
+      };
+    case UPDATE_ORDER_SUCCESS:
+
+      return {
+        ...state,
+        loading: false,
+        error: null,
         item: {
           ...state.item,
-          ...action.payload
+          state: action.payload.state,
+          updatedAt: action.payload.updatedAt,
+          freightInfo: {
+            ...action.payload.freightInfo,
+          },
         },
+      };
+    case UPDATE_ORDER_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;

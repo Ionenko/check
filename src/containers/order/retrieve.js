@@ -1,27 +1,34 @@
-import React, {Fragment, useEffect} from "react";
-import {useHistory} from 'react-router-dom';
-import Heading from "../../components/typography/heading";
-import block from "bem-cn-lite";
-import Field from "../../components/ui/field";
-import Stepper from "../../components/ui/stepper";
-import Header from "../../components/header";
-import * as Yup from "yup";
-import {Form, Formik} from "formik";
-import {connect} from "react-redux";
-import {fetchOrder} from "../../redux/actions/order";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import block from 'bem-cn-lite';
+import * as Yup from 'yup';
+import { Form, Formik } from 'formik';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Heading from '../../components/typography/heading';
+import Field from '../../components/ui/field';
+import Stepper from '../../components/ui/stepper';
+import Header from '../../components/header';
+import {
+  orderError,
+  orderLoaded,
+  orderRequested,
+} from '../../redux/actions/order';
+import { useOrderQuery } from '../../hooks/order';
+import Spinner from '../../components/spinner';
 
 const c = block('content');
 const f = block('form');
 
 const validationSchema = Yup.object({
-  number: Yup.string("Order number email")
-    .required("Order number is required")
+  token: Yup.string('Order number email')
+    .required('Order number is required')
     .min(2, 'Order number must contain at least 2 characters')
     .max(256, 'Order number must contain on more 256 characters'),
 });
 
 const initialFormData = {
-  number: '',
+  token: '',
 };
 
 const RetrieveForm = (props) => {
@@ -31,18 +38,17 @@ const RetrieveForm = (props) => {
     values,
     errors,
     touched,
-    isValid
   } = props;
 
   return (
     <Form className={f()} noValidate onSubmit={handleSubmit} autoComplete="off">
       <Field
-        id="number"
+        id="token"
         type="text"
-        name="number"
+        name="token"
         label="Order Number"
-        error={touched.number ? errors.number : ""}
-        value={values.number}
+        error={touched.token ? errors.token : ''}
+        value={values.token}
         onChange={handleChange}
       />
       <p className="text text_sm text_lg-offset">
@@ -52,27 +58,73 @@ const RetrieveForm = (props) => {
         <button type="submit" className="btn">Continue</button>
       </div>
     </Form>
-  )
+  );
 };
 
-const RetrieveOrder = ({fetchOrder, loading, error}) => {
-  let history = useHistory();
+RetrieveForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  values: PropTypes.objectOf(PropTypes.any).isRequired,
+  errors: PropTypes.objectOf(PropTypes.any).isRequired,
+  touched: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
-  async function handleSubmit(data){
-    await fetchOrder(data.number);
-    history.push(`/order/${data.number}`);
+const useRedirect = () => {
+  const history = useHistory();
+
+  return (state, id) => {
+    switch (state) {
+      case 'Pending':
+        history.push(`/order/${id}`);
+        break;
+      case 'Received by warehouse':
+        history.push(`/order/${id}/inspection`);
+        break;
+      case 'Checked by buyer':
+        history.push(`/order/${id}/complete`);
+        break;
+      default:
+        history.push(`/order/${id}`);
+    }
+  };
+};
+
+const RetrieveOrder = (props) => {
+  const {
+    loading,
+    error,
+    orderRequested,
+    orderLoaded,
+    orderError,
+  } = props;
+
+  const fetchOrder = useOrderQuery();
+  const redirectTo = useRedirect();
+
+  async function handleSubmit(data) {
+    orderRequested();
+    try {
+      const res = await fetchOrder(data.token);
+      orderLoaded(res.data.orderForInspection);
+      redirectTo(
+        res.data.orderForInspection.state,
+        res.data.orderForInspection.id
+      );
+    } catch (err) {
+      orderError(err.message);
+    }
   }
 
-  if(loading) return <div>Loading</div>;
-  if(error) return <div>Error</div>;
-
   return (
-    <Fragment>
+    <>
+      {
+        loading ? <Spinner /> : null
+      }
       <Header>
-        <Heading variant='primary'>
+        <Heading variant="primary">
           <h3>Hi Dascher, Enter an Order Number to Get Started</h3>
         </Heading>
-        <Stepper steps={4} active={0} completed={0}/>
+        <Stepper steps={4} active={0} completed={0} />
       </Header>
       <div className={c('body')}>
         <Heading variant="secondary">
@@ -81,27 +133,46 @@ const RetrieveOrder = ({fetchOrder, loading, error}) => {
         <Formik
           initialValues={initialFormData}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit.bind(this)}
+          onSubmit={handleSubmit}
         >
           {
-            (props) => <RetrieveForm {...props}/>
+            (props) => <RetrieveForm {...props} />
           }
         </Formik>
-
+        {
+          error && (
+          <p>
+            $
+            {error}
+          </p>
+          )
+        }
       </div>
-    </Fragment>
+    </>
   );
 };
 
-const mapStateToProps = ({order: {loading, error}}) => {
-  return {
-    loading,
-    error
-  }
+RetrieveOrder.defaultProps = {
+  error: '',
 };
 
+RetrieveOrder.propTypes = {
+  error: PropTypes.string,
+  orderRequested: PropTypes.func.isRequired,
+  orderLoaded: PropTypes.func.isRequired,
+  orderError: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = ({ order: { loading, error } }) => ({
+  loading,
+  error,
+});
+
 const mapDispatchToProps = {
-  fetchOrder
+  orderRequested,
+  orderLoaded,
+  orderError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RetrieveOrder);

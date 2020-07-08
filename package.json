@@ -7,10 +7,16 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "apollo-boost": "^0.4.9",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-error": "^1.1.13",
+    "apollo-link-http": "^1.5.17",
+    "apollo-upload-client": "^13.0.0",
     "bem-cn-lite": "^4.0.0",
     "formik": "^2.1.4",
     "graphql": "^15.1.0",
+    "graphql-tag": "^2.10.3",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "node-sass": "^4.14.1",
@@ -18,15 +24,15 @@
     "prop-types": "^15.7.2",
     "rc-input-number": "^5.1.0",
     "react": "^16.13.1",
-    "react-alert": "^7.0.1",
-    "react-alert-template-mui": "^1.0.4",
     "react-dom": "^16.13.1",
     "react-files": "^2.4.8",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-toast-notifications": "^2.4.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "shortid": "^2.2.15",
     "yup": "^0.29.1"
   },
   "scripts": {
@@ -49,5 +55,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.0"
   }
 }

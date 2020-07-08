@@ -1,10 +1,2 @@
-export const getBoxProductsArray = (order, current) => {
-  return order.boxes[current].items.map( item => {
-    const index = order.items.findIndex(x => x.id === item);
-    return order.items[index];
-  });
-};
-
-export const getTotalItems = (order) => {
-  return order.items.reduce((total, item) => total + item.count, 0);
-};
+export const getTotalItems = (items) => items.reduce((total, item) => total + item.quantity, 0);
+export const objMatches = (obj, source) => Object.keys(source).every((key) => obj.hasOwnProperty(key) && obj[key] === source[key]);

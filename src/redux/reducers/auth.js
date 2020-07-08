@@ -1,12 +1,12 @@
 import {
   AUTH_LOGOUT,
   AUTH_SUCCESS,
-} from "../../constants";
-
+} from '../../constants';
 
 const initialState = {
-  isLoggedIn: false,
-  token: null,
+  authorizationToken: null,
+  refreshToken: null,
+  userToken: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -14,12 +14,14 @@ const authReducer = (state = initialState, action) => {
     case AUTH_SUCCESS:
       return {
         ...state,
-        token: action.token
+        ...action.payload,
       };
     case AUTH_LOGOUT:
       return {
         ...state,
-        token: null
+        authorizationToken: null,
+        refreshToken: null,
+        userToken: null,
       };
     default:
       return state;

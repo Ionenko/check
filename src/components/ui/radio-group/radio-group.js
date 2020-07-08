@@ -1,6 +1,8 @@
 import React from 'react';
-import Radio from "../radio";
+import { generate } from 'shortid';
 import block from 'bem-cn-lite';
+import PropTypes from 'prop-types';
+import Radio from '../radio';
 import './radio-group.scss';
 
 const r = block('radio-group');
@@ -14,19 +16,20 @@ const RadioGroup = (props) => {
     error,
     touched,
     value,
-    name
+    name,
   } = props;
 
   return (
     <div className={className || null}>
       <div className={r({
-        error: !!error && touched
-      })}>
+        error: !!error && touched,
+      })}
+      >
         {
-          items && items.length > 0 ? items.map((item) => (
+          items && items.length > 0 ? items.map((item, i) => (
             <Radio
-              key={item.value}
-              id={item.value}
+              key={i}
+              id={generate()}
               onChange={() => setFieldValue(name, item.value)}
               label={item.label}
               value={item.value}
@@ -37,12 +40,31 @@ const RadioGroup = (props) => {
         }
       </div>
       {
-        error ? <span className={m({error: !!error})}>
-          {error}
-        </span> : null
+        error ? (
+          <span className={m({ error: !!error })}>
+            {error}
+          </span>
+        ) : null
       }
     </div>
   );
+};
+
+RadioGroup.defaultProps = {
+  className: '',
+  value: false,
+  touched: false,
+  error: '',
+};
+
+RadioGroup.propTypes = {
+  className: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  touched: PropTypes.bool,
+  value: PropTypes.bool,
+  name: PropTypes.string.isRequired,
 };
 
 export default RadioGroup;
