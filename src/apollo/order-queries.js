@@ -17,3 +17,24 @@ export const ORDER_QUERY = gql`
         }
     }
 `;
+
+export const CONFIRM_ORDER_RECEIVED_MUTATION = gql`
+    mutation  confirmOrderReceived(
+        $token: String!,
+        $packageDamaged: Boolean!,
+        $bolImages: [ID!],
+        $packageImages: [ID!],
+        $notes: String ) {
+        confirmOrderReceived(
+            token: $token,
+            packageDamaged: $packageDamaged,
+            bolImages: $bolImages,
+            packageImages: $packageImages,
+            notes: $notes
+        ) {
+            state
+            updatedAt
+            freightInfo
+        }
+    }
+`;

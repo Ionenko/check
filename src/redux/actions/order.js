@@ -6,7 +6,10 @@ import {
   UPDATE_ORDER_REQUEST,
   UPDATE_ORDER_SUCCESS,
 } from '../../constants';
-import {ORDER_QUERY} from "../../apollo/order-queries";
+import {
+  CONFIRM_ORDER_RECEIVED_MUTATION,
+  ORDER_QUERY,
+} from '../../apollo/order-queries';
 
 export const orderLoaded = (order) => ({
   type: FETCH_ORDER_SUCCESS,
@@ -22,39 +25,61 @@ export const orderError = (error) => ({
   payload: error,
 });
 
-export const updateRequested = () => ({
+export const updateOrderRequested = () => ({
   type: UPDATE_ORDER_REQUEST,
 });
 
-export const updateLoaded = (data) => ({
+export const updateOrderLoaded = (data) => ({
   type: UPDATE_ORDER_SUCCESS,
   payload: data,
 });
 
-export const updateError = (error) => ({
+export const updateOrderError = (error) => ({
   type: UPDATE_ORDER_ERROR,
   payload: error,
 });
 
-const fetchOrder = (client, token) => (dispatch) => {
-  return new Promise((resolve, reject) => {
-    dispatch(orderRequested());
+const fetchOrder = (client, token) => (dispatch) => new Promise((resolve, reject) => {
+  dispatch(orderRequested());
 
-    client.query({
-      query: ORDER_QUERY,
-      variables: {
-        token,
-      },
-    }).then((res) => {
-      dispatch(orderLoaded(res.data.orderForInspection));
-      resolve(res.data.orderForInspection);
-    }).catch((err) => {
-      dispatch(orderError(err));
-      reject(err);
-    });
+  client.query({
+    query: ORDER_QUERY,
+    variables: {
+      token,
+    },
+  }).then((res) => {
+    dispatch(orderLoaded(res.data.orderForInspection));
+    resolve(res.data.orderForInspection);
+  }).catch((err) => {
+    dispatch(orderError(err));
+    reject(err);
   });
-};
+});
+
+const confirmOrder = (client, {
+  token, packageDamaged, bolImages, packageImages, notes,
+}) => (dispatch) => new Promise((resolve, reject) => {
+  dispatch(updateOrderRequested());
+
+  client.mutate({
+    mutation: CONFIRM_ORDER_RECEIVED_MUTATION,
+    variables: {
+      token,
+      packageDamaged,
+      bolImages,
+      packageImages,
+      notes,
+    },
+  }).then((res) => {
+    dispatch(updateOrderLoaded(res.data.confirmOrderReceived));
+    resolve(res.data.confirmOrderReceived);
+  }).catch((err) => {
+    dispatch(updateOrderError(err));
+    reject(err);
+  });
+});
 
 export {
   fetchOrder,
+  confirmOrder,
 };

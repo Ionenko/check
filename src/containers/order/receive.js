@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import pluralize from 'pluralize';
 import PropTypes from 'prop-types';
+import { useApolloClient } from '@apollo/react-hooks';
+import { useToasts } from 'react-toast-notifications';
 import Header from '../../components/header';
 import Heading from '../../components/typography/heading';
 import Stepper from '../../components/ui/stepper';
@@ -14,6 +16,7 @@ import iconPlus from '../../img/plus.svg';
 import Field from '../../components/ui/field';
 import File from '../../components/ui/file';
 import {
+  confirmOrder,
   updateError,
   updateLoaded,
   updateRequested,
@@ -147,35 +150,31 @@ const ReceiveOrder = (props) => {
   const {
     order,
     loading,
-    updateRequested,
-    updateLoaded,
-    updateError,
+    confirmOrder,
   } = props;
 
   const history = useHistory();
-  const confirmOrder = useConfirmOrderReceived();
-
-  console.log('ReceiveOrder');
+  const client = useApolloClient();
+  const { addToast } = useToasts();
 
   async function handleSubmit(data) {
-    updateRequested();
-
     try {
-      updateRequested();
-      const { data: { confirmOrderReceived } } = await confirmOrder({
+      const order = await confirmOrder(client, {
         token: props.match.params.id,
         packageDamaged: data.packageDamaged,
         bolImages: data.bolImages,
         packageImages: data.packageImages,
         notes: data.notes,
       });
-
-      updateLoaded(confirmOrderReceived);
-
       history.push(`/order/${order.id}/inspection`);
     } catch (err) {
       console.log(err);
-      updateError(err);
+      addToast(
+        err,
+        {
+          appearance: 'error',
+        },
+      );
     }
   }
 
@@ -261,9 +260,7 @@ ReceiveOrder.propTypes = {
     token: PropTypes.string,
     freightInfo: PropTypes.object,
   }).isRequired,
-  updateRequested: PropTypes.func.isRequired,
-  updateLoaded: PropTypes.func.isRequired,
-  updateError: PropTypes.func.isRequired,
+  confirmOrder: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
@@ -274,9 +271,7 @@ const mapStateToProps = ({ order: { loading, error, item } }) => ({
 });
 
 const mapDispatchToProps = {
-  updateRequested,
-  updateLoaded,
-  updateError,
+  confirmOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReceiveOrder);
