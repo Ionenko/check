@@ -196,6 +196,7 @@ const ReceiveOrder = (props) => {
         <Heading align="center" variant="secondary">
           <h3>
             Order
+            {' '}
             {order.token}
           </h3>
         </Heading>

@@ -5,6 +5,7 @@ import { Form, Formik } from 'formik';
 import { Redirect, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useApolloClient } from '@apollo/react-hooks';
 import Heading from '../../components/typography/heading';
 import Header from '../../components/header';
 import {
@@ -12,13 +13,11 @@ import {
   InspectionBodySteps,
   InspectionFormSteps,
 } from '../../components/inspection-steps';
-import { useCompleteInspection } from '../../hooks/order';
 import {
-  updateError,
-  updateLoaded,
-  updateRequested,
+  completeInspection,
 } from '../../redux/actions/order';
 import Spinner from '../../components/spinner';
+import {useToasts} from "react-toast-notifications";
 
 const c = block('content');
 const f = block('form');
@@ -86,14 +85,14 @@ InspectionForm.propTypes = {
 
 const InspectionOrder = (props) => {
   const {
-    updateRequested,
-    updateLoaded,
-    updateError,
+    completeInspection,
     order,
     loading,
   } = props;
+
   const history = useHistory();
-  const completeInspection = useCompleteInspection();
+  const client = useApolloClient();
+  const { addToast } = useToasts();
 
   const [step, setStep] = useState(0);
   const [currentLine, setCurrentLine] = useState(0);
@@ -107,16 +106,19 @@ const InspectionOrder = (props) => {
   async function handleSubmit(values, actions) {
     if (isLastStep) {
       try {
-        updateRequested();
-        const res = await completeInspection({
+        const completedOrder = await completeInspection(client, {
           token: order.token,
           notes: values.finalNotes,
         });
-        updateLoaded(res.data.completeOrderInspection);
-        history.push(`/order/${order.id}/complete`);
+        history.push(`/order/${completedOrder.id}/complete`);
       } catch (err) {
         console.log(err);
-        updateError(err);
+        addToast(
+          err,
+          {
+            appearance: 'error',
+          },
+        );
       }
     } else {
       nextStep();
@@ -141,7 +143,9 @@ const InspectionOrder = (props) => {
       <div className={c('body')}>
         <Heading variant="primary" align="center">
           <h3>
-            Order { order.token }
+            Order
+            {' '}
+            { order.token }
           </h3>
         </Heading>
         <InspectionBodySteps
@@ -173,11 +177,6 @@ const InspectionOrder = (props) => {
   );
 };
 
-InspectionOrder.defaultProps = {
-  order: null,
-  loading: false,
-};
-
 InspectionOrder.propTypes = {
   order: PropTypes.shape({
     id: PropTypes.oneOfType([
@@ -190,10 +189,8 @@ InspectionOrder.propTypes = {
     token: PropTypes.string,
     freightInfo: PropTypes.object,
   }).isRequired,
-  updateRequested: PropTypes.func.isRequired,
-  updateLoaded: PropTypes.func.isRequired,
-  updateError: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
+  completeInspection: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = ({ order: { loading, error, item } }) => ({
@@ -203,9 +200,7 @@ const mapStateToProps = ({ order: { loading, error, item } }) => ({
 });
 
 const mapDispatchToProps = {
-  updateRequested,
-  updateLoaded,
-  updateError,
+  completeInspection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InspectionOrder);

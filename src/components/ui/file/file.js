@@ -4,8 +4,9 @@ import Files from 'react-files';
 import block from 'bem-cn-lite';
 import './file.scss';
 import PropTypes from 'prop-types';
-import { useUploadOrderImage } from '../../../hooks/order';
 import Spinner from '../../spinner';
+import { uploadOrderImage } from '../../../redux/actions/order';
+import {useApolloClient} from "@apollo/react-hooks";
 
 const m = block('message');
 
@@ -17,13 +18,12 @@ const File = (props) => {
   } = props;
 
   const [loading, setLoading] = useState(false);
-
+  const client = useApolloClient();
   const { addToast } = useToasts();
-  const uploadImage = useUploadOrderImage();
 
   const handleChange = async ([file]) => {
     setLoading(true);
-    const res = await uploadImage(file);
+    const res = await uploadOrderImage(client, file);
     setLoading(false);
     onChange(res.data.uploadOrderImage.id);
   };

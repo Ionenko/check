@@ -3,7 +3,8 @@ import { FieldArray, getIn } from 'formik';
 import block from 'bem-cn-lite';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useOrderItemInspectionResult } from '../../hooks/order';
+import { useApolloClient } from '@apollo/react-hooks';
+import { useToasts } from 'react-toast-notifications';
 import { objMatches } from '../../helpers/orderUtils';
 import Field from '../ui/field';
 import InputNumeric from '../ui/numeric';
@@ -11,9 +12,7 @@ import RadioGroup from '../ui/radio-group';
 import File from '../ui/file';
 import iconPlus from '../../img/plus.svg';
 import {
-  updateError,
-  updateLoaded,
-  updateRequested,
+  confirmOrderItem,
 } from '../../redux/actions/order';
 
 const f = block('form');
@@ -31,9 +30,7 @@ const InspectionFormSteps = (props) => {
     currentLine,
     nextItem,
     initialValues,
-    updateRequested,
-    updateLoaded,
-    updateError,
+    confirmOrderItem,
     order: {
       token,
       orderLines,
@@ -41,7 +38,8 @@ const InspectionFormSteps = (props) => {
     nextStep,
   } = props;
 
-  const orderItemInspectionConfirm = useOrderItemInspectionResult();
+  const client = useApolloClient();
+  const { addToast } = useToasts();
 
   async function handleConfirmItem(push) {
     if (orderLines[currentLine]) {
@@ -53,13 +51,11 @@ const InspectionFormSteps = (props) => {
         validateForm();
       } else {
         try {
-          updateRequested();
-          const res = await orderItemInspectionConfirm({
+          await confirmOrderItem(client, {
             token,
             orderLineId: orderLines[currentLine].id,
             ...values.orderLines[currentLine],
           });
-          updateLoaded(res.data.orderItemInspectionResult);
           if (currentLine < orderLines.length - 1) {
             push(initialValues.orderLines[0]);
             nextItem();
@@ -67,7 +63,13 @@ const InspectionFormSteps = (props) => {
             nextStep();
           }
         } catch (err) {
-          updateError(err);
+          console.log(err);
+          addToast(
+            err,
+            {
+              appearance: 'error',
+            },
+          );
         }
       }
     }
@@ -201,10 +203,6 @@ const InspectionFormSteps = (props) => {
   }
 };
 
-InspectionFormSteps.defaultProps = {
-  order: null,
-};
-
 InspectionFormSteps.propTypes = {
   handleChange: PropTypes.func.isRequired,
   values: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -217,17 +215,23 @@ InspectionFormSteps.propTypes = {
   currentLine: PropTypes.number.isRequired,
   nextItem: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  updateRequested: PropTypes.func.isRequired,
-  updateLoaded: PropTypes.func.isRequired,
-  updateError: PropTypes.func.isRequired,
-  order: PropTypes.objectOf(PropTypes.any),
+  confirmOrderItem: PropTypes.func.isRequired,
+  order: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    state: PropTypes.string,
+    createdAt: PropTypes.number,
+    updatedAt: PropTypes.number,
+    token: PropTypes.string,
+    freightInfo: PropTypes.object,
+  }).isRequired,
   nextStep: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  updateRequested,
-  updateLoaded,
-  updateError,
+  confirmOrderItem,
 };
 
 export default connect(null, mapDispatchToProps)(InspectionFormSteps);
