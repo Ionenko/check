@@ -6,9 +6,10 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { useLogin } from '../../hooks/auth';
-import { authSuccess } from '../../redux/actions/auth';
+import { useApolloClient } from '@apollo/react-hooks';
+import { authLogin } from '../../redux/actions/auth';
 import { LoginForm } from '../../components/auth';
+import Spinner from '../../components/spinner';
 
 const validationSchema = Yup.object({
   email: Yup.string('Enter email')
@@ -27,18 +28,21 @@ const initialFormData = {
   password: '',
 };
 
-const Login = ({ authSuccess, isLoggedIn, location }) => {
-  const login = useLogin();
-  const referer = location.state ? location.state.referer : '/';
+const Login = (props) => {
+  const {
+    authLogin,
+    loading,
+    isLoggedIn,
+    location,
+  } = props;
   const { addToast } = useToasts();
+  const client = useApolloClient();
+  const referer = location.state ? location.state.referer : '/';
 
   async function handleSubmit(data) {
     try {
-      const res = await login(data);
-      if (res.data.login) {
-        authSuccess(res.data.login);
-      }
-    } catch (err) {
+      await authLogin(client, data);
+    } catch (error) {
       addToast(
         'This error occurs when login credentials are not provided, or the credentials are incorrect.',
         {
@@ -53,29 +57,35 @@ const Login = ({ authSuccess, isLoggedIn, location }) => {
   }
 
   return (
-    <Formik
-      initialValues={initialFormData}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {
-        (props) => <LoginForm {...props} />
-      }
-    </Formik>
+    <>
+      { loading && <Spinner /> }
+      <Formik
+        initialValues={initialFormData}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {
+          (props) => <LoginForm {...props} />
+        }
+      </Formik>
+    </>
   );
 };
 
-const mapDispatchToProps = {
-  authSuccess,
-};
-
-const mapStateToProps = (state) => ({
-  isLoggedIn: !!state.auth.authorizationToken,
+const mapStateToProps = ({ auth: { loading, error, authorizationToken } }) => ({
+  isLoggedIn: !!authorizationToken,
+  error,
+  loading,
 });
+
+const mapDispatchToProps = {
+  authLogin,
+};
 
 Login.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  authSuccess: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  authLogin: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
