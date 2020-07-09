@@ -112,7 +112,7 @@ const InspectionFormSteps = (props) => {
                             onChange={(value) => setFieldValue(`orderLines[${index}].quantityReceived`, value)}
                             name={`orderLines[${index}].quantityReceived`}
                             min={0}
-                            max={orderLines[currentLine].quantity}
+                            // max={orderLines[currentLine].quantity}
                             value={item.quantityReceived}
                             type="text"
                           />

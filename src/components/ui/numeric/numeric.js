@@ -5,6 +5,7 @@ import './numeric.scss';
 import arrowDownIcon from '../../../img/arrow-down.svg';
 
 const formatNumber = (x) => {
+  if (!Number(x)) return 0;
   const n = parseInt(x, 10);
   return n >= 10 || n === 0 ? n : `0${n}`;
 };
