@@ -6,6 +6,7 @@ import {
   UPDATE_ORDER_REQUEST,
   UPDATE_ORDER_SUCCESS,
 } from '../../constants';
+import {ORDER_QUERY} from "../../apollo/order-queries";
 
 export const orderLoaded = (order) => ({
   type: FETCH_ORDER_SUCCESS,
@@ -34,3 +35,26 @@ export const updateError = (error) => ({
   type: UPDATE_ORDER_ERROR,
   payload: error,
 });
+
+const fetchOrder = (client, token) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    dispatch(orderRequested());
+
+    client.query({
+      query: ORDER_QUERY,
+      variables: {
+        token,
+      },
+    }).then((res) => {
+      dispatch(orderLoaded(res.data.orderForInspection));
+      resolve(res.data.orderForInspection);
+    }).catch((err) => {
+      dispatch(orderError(err));
+      reject(err);
+    });
+  });
+};
+
+export {
+  fetchOrder,
+};

@@ -5,16 +5,15 @@ import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useApolloClient } from '@apollo/react-hooks';
+import { useToasts } from 'react-toast-notifications';
 import Heading from '../../components/typography/heading';
 import Field from '../../components/ui/field';
 import Stepper from '../../components/ui/stepper';
 import Header from '../../components/header';
 import {
-  orderError,
-  orderLoaded,
-  orderRequested,
+  fetchOrder,
 } from '../../redux/actions/order';
-import { useOrderQuery } from '../../hooks/order';
 import Spinner from '../../components/spinner';
 
 const c = block('content');
@@ -91,27 +90,30 @@ const useRedirect = () => {
 
 const RetrieveOrder = (props) => {
   const {
+    fetchOrder,
     loading,
     error,
-    orderRequested,
-    orderLoaded,
-    orderError,
   } = props;
 
-  const fetchOrder = useOrderQuery();
   const redirectTo = useRedirect();
+  const client = useApolloClient();
+  const { addToast } = useToasts();
 
   async function handleSubmit(data) {
-    orderRequested();
     try {
-      const res = await fetchOrder(data.token);
-      orderLoaded(res.data.orderForInspection);
+      const order = await fetchOrder(client, data.token);
       redirectTo(
-        res.data.orderForInspection.state,
-        res.data.orderForInspection.id
+        order.state,
+        order.id,
       );
     } catch (err) {
-      orderError(err.message);
+      console.log(err);
+      addToast(
+        err,
+        {
+          appearance: 'error',
+        },
+      );
     }
   }
 
@@ -139,14 +141,6 @@ const RetrieveOrder = (props) => {
             (props) => <RetrieveForm {...props} />
           }
         </Formik>
-        {
-          error && (
-          <p>
-            $
-            {error}
-          </p>
-          )
-        }
       </div>
     </>
   );
@@ -158,9 +152,7 @@ RetrieveOrder.defaultProps = {
 
 RetrieveOrder.propTypes = {
   error: PropTypes.string,
-  orderRequested: PropTypes.func.isRequired,
-  orderLoaded: PropTypes.func.isRequired,
-  orderError: PropTypes.func.isRequired,
+  fetchOrder: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
@@ -170,9 +162,7 @@ const mapStateToProps = ({ order: { loading, error } }) => ({
 });
 
 const mapDispatchToProps = {
-  orderRequested,
-  orderLoaded,
-  orderError,
+  fetchOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RetrieveOrder);

@@ -1,35 +1,6 @@
 import { useApolloClient } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-const ORDER_QUERY = gql`
-    query orderForInspection($token: String!) {
-        orderForInspection(token: $token) {
-            id
-            state
-            createdAt
-            updatedAt
-            token
-            freightInfo
-            orderLines {
-                id
-                quantity
-                productVariant
-            }
-        }
-    }
-`;
-
-const useOrderQuery = () => {
-  const client = useApolloClient();
-
-  return async (token) => client.query({
-    query: ORDER_QUERY,
-    variables: {
-      token,
-    },
-  });
-};
-
 const CONFIRM_ORDER_RECEIVED_MUTATION = gql`
     mutation  confirmOrderReceived(
         $token: String!,
@@ -157,7 +128,6 @@ const useCompleteInspection = () => {
 };
 
 export {
-  useOrderQuery,
   useConfirmOrderReceived,
   useOrderItemInspectionResult,
   useUploadOrderImage,
