@@ -19,7 +19,7 @@
     "graphql-tag": "^2.10.3",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
     "rc-input-number": "^5.1.0",
